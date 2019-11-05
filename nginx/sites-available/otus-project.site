@@ -1,0 +1,32 @@
+server {
+    server_name www.otus-project.site;
+    return 301 $scheme://otus-project.site$request_uri;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name otus-project.site;
+
+    root /var/www/html/site.ru;
+
+    index index.php index.html index.htm;
+
+    location ~* \.(jpeg|ico|jpg|gif|png|css|js|pdf|txt|tar|gz|wof|csv|zip|xml|yml|map) {
+        access_log off;
+        expires 14d;
+        add_header Access-Control-Allow-Origin *;
+        add_header Cache-Control public;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass phpCloud;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
