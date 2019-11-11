@@ -1,15 +1,14 @@
 version: '2'
 services:
-   php:
-      image: php:7.2-fpm
-      restart: always
-      expose:
-         - 9000
-      volumes:
-         - /var/www/html:/var/www/html
-         - /var/log:/var/log
+  php:
+    build: ./php
+    restart: always
+    expose:
+      - 9000
+    volumes:
+      - /var/www/html/:/var/www/html/
 
-   nginx-site:
+  nginx-site:
       build: nginx
       restart: always
       volumes:
@@ -22,7 +21,7 @@ services:
          - LETSENCRYPT_HOST=otus-project.site
          - LETSENCRYPT_EMAIL=myazina@tutu.tech
 
-   nginx:
+  nginx:
      restart: always
      image: nginx
      container_name: nginx
@@ -35,7 +34,7 @@ services:
          - "/usr/share/nginx/html"
          - "./volumes/proxy/certs:/etc/nginx/certs:ro"
 
-   nginx-gen:
+  nginx-gen:
      restart: always
      image: jwilder/docker-gen
      container_name: nginx-gen
@@ -46,7 +45,7 @@ services:
          - nginx
      entrypoint: /usr/local/bin/docker-gen -notify-sighup nginx -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
 
-   letsencrypt-nginx-proxy-companion:
+  letsencrypt-nginx-proxy-companion:
      restart: always
      image: jrcs/letsencrypt-nginx-proxy-companion
      container_name: letsencrypt-nginx-proxy-companion
