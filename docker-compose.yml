@@ -1,7 +1,7 @@
 version: '2'
 services:
   php:
-    build: ./php
+    image: tyrellsys/docker-phpfpm
     restart: always
     expose:
       - 9000
