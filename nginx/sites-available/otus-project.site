@@ -9,7 +9,7 @@ server {
 
     server_name otus-project.site;
 
-    root /var/www/html/otus-project.site;
+    root /var/www/html;
 
     index index.php index.html index.htm;
 
@@ -26,5 +26,7 @@ server {
 
     location ~ \.php$ {
         fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 }
