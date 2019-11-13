@@ -6,13 +6,21 @@ services:
     expose:
       - 9000
     volumes:
-      - /home/otusproject/projects/project/php:/var/www/html/
+      - /home/otusproject/projects/project/php:/var/www/html
+
+  python:
+    image: 3.8.0-slim-buster
+    ports:
+      - 5000
+    volumes:
+      - /home/otusproject/projects/project/python:/var/www/python
 
   nginx-site:
       build: nginx
       restart: always
       volumes:
          - /home/otusproject/projects/project/php:/var/www/html
+         - /home/otusproject/projects/project/python:/var/www/python
          - /var/log:/var/log
       environment:
          - VIRTUAL_HOST=otus-project.site

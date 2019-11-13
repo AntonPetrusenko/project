@@ -29,4 +29,11 @@ server {
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
+
+    location ~ \.py$ {
+        root = /var/www/python;
+        try_files $uri $uri/ /matchResultPrediction.py?$args;
+        index matchResultPrediction.py
+        fastcgi_pass python:5000;
+    }
 }
