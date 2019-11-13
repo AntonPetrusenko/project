@@ -1,1 +1,14 @@
-.idea/*
+composer.phar
+/vendor/
+.env
+/php/vendor
+/php/composer.phar
+
+≈
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+.DS_Store

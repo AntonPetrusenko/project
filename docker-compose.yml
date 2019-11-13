@@ -6,13 +6,13 @@ services:
     expose:
       - 9000
     volumes:
-      - /var/www/html/:/var/www/html/
+      - /home/otusproject/projects/project/php:/var/www/html/
 
   nginx-site:
       build: nginx
       restart: always
       volumes:
-         - /var/www/html:/var/www/html
+         - /home/otusproject/projects/project/php:/var/www/html
          - /var/log:/var/log
       environment:
          - VIRTUAL_HOST=otus-project.site
