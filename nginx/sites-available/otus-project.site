@@ -31,9 +31,10 @@ server {
     }
 
     location ~ \.py$ {
+        uwsgi_pass python:5000;
+        include uwsgi_params;
         root = /var/www/python;
         try_files $uri $uri/ /matchResultPrediction.py?$args;
         index matchResultPrediction.py
-        fastcgi_pass python:5000;
     }
 }
