@@ -12,14 +12,13 @@ services:
     build: ./python
     restart: always
     ports:
-      - 3333:3333
+      - 80
 
   nginx-site:
       build: nginx
       restart: always
       volumes:
          - /home/otusproject/projects/project/php:/var/www/html
-         - /home/otusproject/projects/project/python:/var/www/python
          - /var/log:/var/log
       environment:
          - VIRTUAL_HOST=otus-project.site

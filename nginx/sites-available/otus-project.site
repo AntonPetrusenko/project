@@ -31,7 +31,7 @@ server {
     }
 
     location ~ \.py$ {
-        uwsgi_pass python:3333;
+        uwsgi_pass python:80;
         include uwsgi_params;
     }
 }
