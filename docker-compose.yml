@@ -12,7 +12,7 @@ services:
     build: ./python
     restart: always
     ports:
-      - 80
+      - 3333:3333
 
   nginx-site:
       build: nginx
