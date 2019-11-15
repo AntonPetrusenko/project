@@ -9,11 +9,10 @@ services:
       - /home/otusproject/projects/project/php:/var/www/html
 
   python:
-    image: 3.8.0-slim-buster
+    build: ./python
+    restart: always
     ports:
-      - 5000
-    volumes:
-      - /home/otusproject/projects/project/python:/var/www/python
+      - 80
 
   nginx-site:
       build: nginx
