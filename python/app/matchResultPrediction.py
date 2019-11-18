@@ -230,5 +230,5 @@ class Quote(Resource):
 
 api.add_resource(Quote, '/', '/', "/<string:team1>_<string:team2>")
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True, port=80)
 
