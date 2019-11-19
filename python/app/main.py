@@ -228,7 +228,11 @@ class Quote(Resource):
 # In[ ]:
 
 
-api.add_resource(Quote, '/', '/', "/<string:team1>_<string:team2>")
+@app.route("/")
+def hello():
+    return "Hello World from Flask"
+
+api.add_resource(Quote, '/', '/', "/footballResult/<string:team1>_<string:team2>")
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True, port=666)
+    app.run(host='127.0.0.1', debug=True, port=80)
 
