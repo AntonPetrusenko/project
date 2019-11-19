@@ -30,7 +30,7 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
-    location ^~ /footballResults/ {
+    location ^~ /footballResult/ {
         uwsgi_pass python:80;
         include uwsgi_params;
     }
