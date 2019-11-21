@@ -3,6 +3,7 @@ composer.phar
 .env
 /php/vendor
 /php/composer.phar
+/volumes/proxy/certs
 
 ≈
 # JetBrains IDEs

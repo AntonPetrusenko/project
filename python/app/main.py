@@ -236,8 +236,7 @@ class Quote(Resource):
 
 # In[ ]:
 
-
-api.add_resource(Quote, '/', '/', "/<string:team1>_<string:team2>")
+api.add_resource(Quote, '/', '/', "/footballResult/<string:team1>_<string:team2>")
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=80)
 
