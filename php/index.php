@@ -91,7 +91,7 @@ function sendMessageWithPredictedResult($output, $bot, $cid, $command1, $command
             $bot->sendMessage($cid, "Результат: победит команда $command2");
             break;
         default:
-            $bot->sendMessage($cid, $command1 . 'Вы ввели неверные названия команд. Попробуйте еще раз');
+            $bot->sendMessage($cid, 'Вы ввели неверные названия команд. Попробуйте еще раз');
             break;
     }
 }
