@@ -48,14 +48,12 @@ try {
         $mtext = $message->getText();
         $cid = $message->getChat()->getId();
 
-        if (mb_stripos($mtext,' - ') !== false) {
+        preg_match('/\s*(?<command1>\S+\s*\S+)\s*-\s*(?<command2>\S+\s*\S+)\s*/', $mtext, $matches);
 
-            $mtext = trim($mtext);
-            $resultArr = explode(' - ', $mtext);
+        if (isset($matches['command1']) && isset($matches['command2'])) {
 
-            //TODO: обработка ошибок
-            $command1 = $resultArr[0] ?? '';
-            $command2 = $resultArr[1] ?? '';
+            $command1 = $matches['command1'];
+            $command2 = $matches['command2'];
 
             $output = sendRequestToPython($command1, $command2);
 
@@ -93,7 +91,7 @@ function sendMessageWithPredictedResult($output, $bot, $cid, $command1, $command
             $bot->sendMessage($cid, "Результат: победит команда $command2");
             break;
         default:
-            $bot->sendMessage($cid, 'Вы ввели неверные названия команд. Попробуйте еще раз');
+            $bot->sendMessage($cid, $command1 . 'Вы ввели неверные названия команд. Попробуйте еще раз');
             break;
     }
 }
