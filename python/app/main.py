@@ -28,6 +28,16 @@ columns = ['Season', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR', 'HTHG', 'HTA
            'AR', 'B365H', 'B365D', 'B365A']
 finaldf.columns.difference(columns)
 finaldf = finaldf[columns]
+finaldf['HomeTeam'] = finaldf['HomeTeam'].str.replace('Man', 'Manchester')
+finaldf['AwayTeam'] = finaldf['AwayTeam'].str.replace('Man', 'Manchester')
+finaldf['HomeTeam'] = finaldf['HomeTeam'].str.replace('United', 'Utd')
+finaldf['AwayTeam'] = finaldf['AwayTeam'].str.replace('United', 'Utd')
+
+df5['HomeTeam'] = df5['HomeTeam'].str.replace('Man', 'Manchester')
+df5['AwayTeam'] = df5['AwayTeam'].str.replace('Man', 'Manchester')
+df5['HomeTeam'] = df5['HomeTeam'].str.replace('United', 'Utd')
+df5['AwayTeam'] = df5['AwayTeam'].str.replace('United', 'Und')
+
 finaldf[1600:1610]
 
 
@@ -215,7 +225,6 @@ api = Api(app)
 
 
 # In[18]:
-
 
 class Quote(Resource):
     def get(self, team1, team2):
