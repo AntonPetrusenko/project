@@ -7,7 +7,15 @@ try {
     $bot = new Client('804984712:AAGv-Mhl6dXbdqHkKC5gMytj9GFE1fb5aNQ');
 
     $bot->command('help', function ($message) use ($bot) {
-        $bot->sendMessage($message->getChat()->getId(), $answer = 'Тут надо перечислить команды для работы с ботом');
+        $answer = "Вам доступны команды:\n\n/help выводит справочную информацию о доступных командах бота"
+            . "\n\n/schedule выводит расписание матчей английской премьер-лиги на ближайшие 7 дней"
+            . "\n\n/start выводит приветствие и предлагает выбрать один из матчей в ближайшие 7 дней "
+            . 'для получения предсказания результата матча'
+            . "\n\nЧтобы получить предсказание результата матча, отправьте сообщение с названиями команд через \" - \"."
+            . ' Например:';
+
+        $bot->sendMessage($message->getChat()->getId(), $answer);
+        $bot->sendMessage($message->getChat()->getId(), 'Watford - Burnley');
     });
 
     $bot->command('start', function ($message) use ($bot) {
@@ -29,7 +37,9 @@ try {
     });
 
     $bot->command('schedule', function ($message) use ($bot) {
-        $bot->sendMessage($message->getChat()->getId(), $answer = getScheduleText());
+        foreach (getScheduleResult() as $stringAnswer) {
+            $bot->sendMessage($message->getChat()->getId(), $stringAnswer);
+        }
     });
 
     $bot->on(function($update) use ($bot) {
@@ -44,12 +54,18 @@ try {
             $resultArr = explode(' - ', $mtext);
 
             //TODO: обработка ошибок
-            $command1 = $resultArr[0];
-            $command2 = $resultArr[1];
+            $command1 = $resultArr[0] ?? '';
+            $command2 = $resultArr[1] ?? '';
 
             $output = sendRequestToPython($command1, $command2);
 
             sendMessageWithPredictedResult($output, $bot, $cid, $command1, $command2);
+        } else {
+            $bot->sendMessage($cid, 'Вы ввели неверные данные. Чтобы получить больше информации о возможностях бота, '
+                . "воспользуйтесь командой\n/help\n\n"
+                . 'Чтобы получить предсказание результата матча, '
+                . 'отправьте сообщение с названиями команд через " - ". Например:');
+            $bot->sendMessage($message->getChat()->getId(), 'Watford - Burnley');
         }
 
     }, function () { return true; });
@@ -93,7 +109,7 @@ function stripAllWhiteSpaces($string)
 function sendRequestToPython($command1, $command2)
 {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'python/footballResult/' . $command1 . '_' . $command2);
+    curl_setopt($ch, CURLOPT_URL, 'python/footballResult/' . rawurlencode($command1 . '_' . $command2));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($ch);
     curl_close($ch);
@@ -128,20 +144,21 @@ function sendRequestToFootballSchedule()
     return json_decode($response->getBody(), true);
 }
 
-function getScheduleText()
+function getScheduleResult()
 {
     $responseArray = sendRequestToFootballSchedule();
 
-    $resultString = "На этой неделе играют:\n";
+    $result[0] = "На этой неделе играют:\n\n";
     foreach ($responseArray as $match)
     {
-        $command1 = $match['match_hometeam_name'] ?? null;
-        $command2 = $match['match_awayteam_name'] ?? null;
+        $command1 = $match['match_hometeam_name'] ?? '';
+        $command2 = $match['match_awayteam_name'] ?? '';
         //TODO: обработка ошибок
-        $resultString = $resultString . "$command1 - $command2\n";
+
+        $result[] = "$command1 - $command2";
     }
 
-    return $resultString;
+    return $result;
 }
 
 function getKeyboardScheduleArray()
@@ -153,8 +170,8 @@ function getKeyboardScheduleArray()
     $i = 0;
     foreach ($responseArray as $match)
     {
-        $command1 = $match['match_hometeam_name'] ?? null;
-        $command2 = $match['match_awayteam_name'] ?? null;
+        $command1 = $match['match_hometeam_name'] ?? '';
+        $command2 = $match['match_awayteam_name'] ?? '';
         //TODO: обработка ошибок
 
         $rowResult[] = ["text" => "$command1 - $command2"];
