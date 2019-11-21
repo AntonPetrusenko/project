@@ -48,7 +48,7 @@ try {
         $mtext = $message->getText();
         $cid = $message->getChat()->getId();
 
-        preg_match('/\s*(?<command1>\S+\s*\S+)\s*-\s*(?<command2>\S+\s*\S+)\s*/', $mtext, $matches);
+        preg_match('/\s*(?<command1>\S+.*\S+)\s*-\s*(?<command2>\S+.*\S+)\s*/', $mtext, $matches);
 
         if (isset($matches['command1']) && isset($matches['command2'])) {
 
